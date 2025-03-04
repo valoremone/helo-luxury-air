@@ -1,46 +1,110 @@
-# Getting Started with Create React App
+# HELO Luxury Air Mobility
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A premium helicopter booking platform for luxury air travel.
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+HELO Luxury Air Mobility is a web application that provides a seamless booking experience for luxury helicopter services. The application consists of two main components:
 
-### `npm start`
+1. **Member-facing App**: Allows members to book helicopter services, view upcoming trips, manage their profile, and access membership benefits.
+2. **Admin Dashboard**: Enables administrators to manage bookings, users, fleet, and view analytics.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Member App
 
-### `npm test`
+- **Authentication**: Secure login/registration with role-based access control
+- **Booking Workflow**: Intuitive booking process with location selection, scheduling, and add-on services
+- **User Dashboard**: View upcoming and past trips
+- **Profile Management**: Update personal information, payment methods, and saved locations
+- **Real-time Updates**: Booking confirmations and flight status notifications
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Admin Dashboard
 
-### `npm run build`
+- **Booking Management**: Calendar view of scheduled flights with approval workflow
+- **User Management**: Member directory with search and filter capabilities
+- **Fleet Management**: Helicopter and vehicle inventory with maintenance scheduling
+- **Analytics**: Booking metrics, revenue visualization, and route analysis
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Frontend**: React with TypeScript
+- **State Management**: Redux Toolkit
+- **Styling**: Tailwind CSS
+- **Authentication**: JWT-based auth
+- **API Communication**: Axios
+- **Forms**: React Hook Form
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+### Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Node.js (v14 or higher)
+- npm or yarn
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Installation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/helo-luxury-air.git
+   cd helo-luxury-air
+   ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-## Learn More
+3. Start the development server:
+   ```
+   npm start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4. Open [http://localhost:3000](http://localhost:3000) to view the application in your browser.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Usage
+
+### Member Access
+
+- Navigate to `/login` to sign in as a member
+- Use the following demo credentials:
+  - Email: john.doe@example.com
+  - Password: password123
+
+### Admin Access
+
+- Navigate to `/login` and sign in with admin credentials:
+  - Email: admin@heloluxuryair.com
+  - Password: admin123
+
+## Project Structure
+
+```
+src/
+├── components/       # Reusable UI components
+├── features/         # Feature-based modules with Redux slices
+├── layouts/          # Page layout components
+├── pages/            # Page components
+├── services/         # API services
+├── store/            # Redux store configuration
+├── utils/            # Utility functions
+└── hooks/            # Custom React hooks
+```
+
+## Design
+
+- **Dark Mode**: Luxury aesthetic with dark interface
+- **Color Scheme**: Black primary (#000000), Accent gold (#C4B087)
+- **Responsive Design**: Supports desktop and tablet views
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgements
+
+- [React](https://reactjs.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Router](https://reactrouter.com/)
+- [React Hook Form](https://react-hook-form.com/)
