@@ -114,10 +114,10 @@ const TripsPage: React.FC = () => {
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h2 className="text-xl font-semibold">
-                        {trip.pickupLocation.name} to {trip.dropoffLocation.name}
+                        {trip.origin} → {trip.destination}
                       </h2>
                       <p className="text-gray-500 dark:text-gray-400">
-                        {formatDate(trip.departureDate)} • {trip.departureTime}
+                        {new Date(trip.departureDate).toLocaleString()}
                       </p>
                     </div>
                     <span
@@ -131,10 +131,10 @@ const TripsPage: React.FC = () => {
                   <div className="border-t border-gray-200 dark:border-tertiary pt-4 mt-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {trip.passengerCount} Passengers
-                        </p>
-                        <p className="font-medium">${trip.price.toFixed(2)}</p>
+                        <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                          <span>{trip.passengers} passengers</span>
+                          <span>${trip.totalAmount.toLocaleString()}</span>
+                        </div>
                       </div>
                       <Link
                         to={`/member/trips/${trip.id}`}
@@ -167,10 +167,10 @@ const TripsPage: React.FC = () => {
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h2 className="text-xl font-semibold">
-                        {trip.pickupLocation.name} to {trip.dropoffLocation.name}
+                        {trip.origin} → {trip.destination}
                       </h2>
                       <p className="text-gray-500 dark:text-gray-400">
-                        {formatDate(trip.departureDate)} • {trip.departureTime}
+                        {new Date(trip.departureDate).toLocaleString()}
                       </p>
                     </div>
                     <span
@@ -184,10 +184,10 @@ const TripsPage: React.FC = () => {
                   <div className="border-t border-gray-200 dark:border-tertiary pt-4 mt-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {trip.passengerCount} Passengers
-                        </p>
-                        <p className="font-medium">${trip.price.toFixed(2)}</p>
+                        <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                          <span>{trip.passengers} passengers</span>
+                          <span>${trip.totalAmount.toLocaleString()}</span>
+                        </div>
                       </div>
                       <Link
                         to={`/member/trips/${trip.id}`}

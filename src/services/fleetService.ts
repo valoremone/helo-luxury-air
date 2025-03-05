@@ -30,6 +30,17 @@ export interface GroundVehicle extends Vehicle {
   driverIds: string[];
 }
 
+export interface Aircraft {
+  id: string;
+  model: string;
+  registration: string;
+  imageUrl: string;
+  capacity: number;
+  range: number;
+  year: number;
+  status: 'available' | 'maintenance';
+}
+
 // Mock data for helicopters
 const mockHelicopters: Helicopter[] = [
   {
@@ -133,6 +144,50 @@ const mockGroundVehicles: GroundVehicle[] = [
     nextMaintenance: '2023-10-10',
     licensePlate: 'HELO003',
     driverIds: ['d4'],
+  },
+];
+
+// Mock fleet data
+const mockAircraft: Aircraft[] = [
+  {
+    id: 'h1',
+    model: 'Sikorsky S-76D',
+    registration: 'N760HL',
+    imageUrl: 'https://example.com/images/s76d.jpg',
+    capacity: 8,
+    range: 400,
+    year: 2020,
+    status: 'available',
+  },
+  {
+    id: 'h2',
+    model: 'AgustaWestland AW139',
+    registration: 'N139HL',
+    imageUrl: 'https://example.com/images/aw139.jpg',
+    capacity: 12,
+    range: 570,
+    year: 2021,
+    status: 'available',
+  },
+  {
+    id: 'h3',
+    model: 'Bell 429',
+    registration: 'N429HL',
+    imageUrl: 'https://example.com/images/bell429.jpg',
+    capacity: 6,
+    range: 380,
+    year: 2019,
+    status: 'maintenance',
+  },
+  {
+    id: 'h4',
+    model: 'Airbus H160',
+    registration: 'N160HL',
+    imageUrl: 'https://example.com/images/h160.jpg',
+    capacity: 10,
+    range: 460,
+    year: 2022,
+    status: 'available',
   },
 ];
 
@@ -288,6 +343,69 @@ const fleetService = {
       });
     } catch (error) {
       console.error(`Error scheduling maintenance for ${vehicleType} with ID ${id}:`, error);
+      throw error;
+    }
+  },
+
+  getAllAircraft: async (): Promise<Aircraft[]> => {
+    try {
+      // In a real app, this would be an API call
+      // const response = await api.get('/fleet');
+      // return response.data;
+      
+      // For now, return mock data
+      return new Promise((resolve) => {
+        setTimeout(() => resolve([...mockAircraft]), 500);
+      });
+    } catch (error) {
+      console.error('Error fetching fleet:', error);
+      throw error;
+    }
+  },
+
+  getAircraftById: async (id: string): Promise<Aircraft | undefined> => {
+    try {
+      // In a real app, this would be an API call
+      // const response = await api.get(`/fleet/${id}`);
+      // return response.data;
+      
+      // For now, return mock data
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const aircraft = mockAircraft.find(a => a.id === id);
+          resolve(aircraft);
+        }, 500);
+      });
+    } catch (error) {
+      console.error('Error fetching aircraft:', error);
+      throw error;
+    }
+  },
+
+  updateAircraftStatus: async (id: string, status: 'available' | 'maintenance'): Promise<Aircraft> => {
+    try {
+      // In a real app, this would be an API call
+      // const response = await api.patch(`/fleet/${id}`, { status });
+      // return response.data;
+      
+      // For now, update mock data
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const aircraftIndex = mockAircraft.findIndex(a => a.id === id);
+          if (aircraftIndex === -1) {
+            throw new Error('Aircraft not found');
+          }
+          
+          mockAircraft[aircraftIndex] = {
+            ...mockAircraft[aircraftIndex],
+            status,
+          };
+          
+          resolve(mockAircraft[aircraftIndex]);
+        }, 500);
+      });
+    } catch (error) {
+      console.error('Error updating aircraft status:', error);
       throw error;
     }
   },

@@ -13,25 +13,19 @@ export interface Location {
 }
 
 export interface BookingDetails {
-  id?: string;
+  id: string;
   userId: string;
-  pickupLocation: Location;
-  dropoffLocation: Location;
+  customerName: string;
+  customerEmail: string;
+  origin: string;
+  destination: string;
   departureDate: string;
-  departureTime: string;
   returnDate?: string;
-  returnTime?: string;
-  passengerCount: number;
-  specialRequests?: string;
-  addOns?: {
-    groundTransportation?: boolean;
-    catering?: boolean;
-    conciergeService?: boolean;
-  };
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  price: number;
-  createdAt?: string;
-  updatedAt?: string;
+  passengers: number;
+  status: 'pending' | 'confirmed' | 'cancelled';
+  aircraftId: string;
+  totalAmount: number;
+  createdAt: string;
 }
 
 // Mock data for locations
@@ -71,35 +65,47 @@ const mockLocations: Location[] = [
 // Mock data for bookings
 const mockBookings: BookingDetails[] = [
   {
-    id: '1',
-    userId: '1',
-    pickupLocation: mockLocations[0],
-    dropoffLocation: mockLocations[1],
-    departureDate: '2023-07-15',
-    departureTime: '10:00',
-    passengerCount: 3,
-    specialRequests: 'Champagne on arrival',
-    addOns: {
-      groundTransportation: true,
-      catering: true,
-    },
+    id: 'b1',
+    userId: 'user1',
+    customerName: 'John Smith',
+    customerEmail: 'john.smith@example.com',
+    origin: 'Manhattan',
+    destination: 'Hamptons',
+    departureDate: '2024-07-15T10:00:00Z',
+    passengers: 4,
     status: 'confirmed',
-    price: 5000,
-    createdAt: '2023-07-01T12:00:00Z',
-    updatedAt: '2023-07-01T12:30:00Z',
+    aircraftId: 'h1',
+    totalAmount: 5000,
+    createdAt: '2024-03-10T15:30:00Z',
   },
   {
-    id: '2',
-    userId: '1',
-    pickupLocation: mockLocations[1],
-    dropoffLocation: mockLocations[0],
-    departureDate: '2023-07-20',
-    departureTime: '16:00',
-    passengerCount: 2,
+    id: 'b2',
+    userId: 'user2',
+    customerName: 'Sarah Johnson',
+    customerEmail: 'sarah.j@example.com',
+    origin: 'Manhattan',
+    destination: 'JFK',
+    departureDate: '2024-07-16T14:00:00Z',
+    passengers: 2,
     status: 'pending',
-    price: 4500,
-    createdAt: '2023-07-05T09:00:00Z',
-    updatedAt: '2023-07-05T09:00:00Z',
+    aircraftId: 'h2',
+    totalAmount: 2500,
+    createdAt: '2024-03-11T09:15:00Z',
+  },
+  {
+    id: 'b3',
+    userId: 'user3',
+    customerName: 'Michael Brown',
+    customerEmail: 'michael.b@example.com',
+    origin: 'Greenwich',
+    destination: 'Manhattan',
+    departureDate: '2024-07-17T11:30:00Z',
+    returnDate: '2024-07-17T16:30:00Z',
+    passengers: 6,
+    status: 'cancelled',
+    aircraftId: 'h3',
+    totalAmount: 7500,
+    createdAt: '2024-03-12T11:45:00Z',
   },
 ];
 
@@ -126,10 +132,10 @@ const bookingService = {
   getUserBookings: async (userId: string): Promise<BookingDetails[]> => {
     try {
       // In a real app, this would be an API call
-      // const response = await api.get(`/bookings/user/${userId}`);
+      // const response = await api.get(`/users/${userId}/bookings`);
       // return response.data;
       
-      // For now, return mock data
+      // For now, filter mock data
       return new Promise((resolve) => {
         setTimeout(() => {
           const userBookings = mockBookings.filter(booking => booking.userId === userId);
@@ -190,7 +196,7 @@ const bookingService = {
       // const response = await api.get(`/bookings/${id}`);
       // return response.data;
       
-      // For now, return mock data
+      // For now, find in mock data
       return new Promise((resolve) => {
         setTimeout(() => {
           const booking = mockBookings.find(b => b.id === id);
@@ -198,31 +204,30 @@ const bookingService = {
         }, 500);
       });
     } catch (error) {
-      console.error(`Error fetching booking with ID ${id}:`, error);
+      console.error('Error fetching booking:', error);
       throw error;
     }
   },
   
   // Create a new booking
-  createBooking: async (bookingData: Omit<BookingDetails, 'id' | 'status' | 'createdAt' | 'updatedAt'>): Promise<BookingDetails> => {
+  createBooking: async (bookingData: Omit<BookingDetails, 'id' | 'createdAt'>): Promise<BookingDetails> => {
     try {
       // In a real app, this would be an API call
       // const response = await api.post('/bookings', bookingData);
       // return response.data;
       
-      // For now, return mock data
+      // For now, create mock booking
       return new Promise((resolve) => {
         setTimeout(() => {
           const newBooking: BookingDetails = {
             ...bookingData,
-            id: `${mockBookings.length + 1}`,
-            status: 'pending',
+            id: `b${mockBookings.length + 1}`,
             createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
           };
+          
           mockBookings.push(newBooking);
           resolve(newBooking);
-        }, 1000);
+        }, 500);
       });
     } catch (error) {
       console.error('Error creating booking:', error);
@@ -264,32 +269,33 @@ const bookingService = {
   
   // Cancel a booking
   cancelBooking: async (id: string): Promise<BookingDetails> => {
+    return bookingService.updateBookingStatus(id, 'cancelled');
+  },
+
+  updateBookingStatus: async (id: string, status: 'pending' | 'confirmed' | 'cancelled'): Promise<BookingDetails> => {
     try {
       // In a real app, this would be an API call
-      // const response = await api.put(`/bookings/${id}/cancel`);
+      // const response = await api.patch(`/bookings/${id}`, { status });
       // return response.data;
       
-      // For now, return mock data
-      return new Promise((resolve, reject) => {
+      // For now, update mock data
+      return new Promise((resolve) => {
         setTimeout(() => {
-          const bookingIndex = mockBookings.findIndex(booking => booking.id === id);
+          const bookingIndex = mockBookings.findIndex(b => b.id === id);
           if (bookingIndex === -1) {
-            reject(new Error('Booking not found'));
-            return;
+            throw new Error('Booking not found');
           }
           
-          const cancelledBooking = {
+          mockBookings[bookingIndex] = {
             ...mockBookings[bookingIndex],
-            status: 'cancelled' as const,
-            updatedAt: new Date().toISOString(),
+            status,
           };
           
-          mockBookings[bookingIndex] = cancelledBooking;
-          resolve(cancelledBooking);
-        }, 1000);
+          resolve(mockBookings[bookingIndex]);
+        }, 500);
       });
     } catch (error) {
-      console.error('Error cancelling booking:', error);
+      console.error('Error updating booking status:', error);
       throw error;
     }
   },

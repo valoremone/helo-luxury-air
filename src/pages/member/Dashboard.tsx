@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
           // Fetch user's upcoming trips
           const trips = await bookingService.getUserBookings(currentUser.id);
           const upcoming = trips.filter(
-            (trip) => trip.status !== 'cancelled' && trip.status !== 'completed'
+            (trip) => trip.status !== 'cancelled'
           );
           setUpcomingTrips(upcoming);
           
@@ -170,15 +170,11 @@ const Dashboard: React.FC = () => {
                 <div className="flex justify-between">
                   <div>
                     <h3 className="font-medium text-primary dark:text-light">
-                      {trip.pickupLocation.name} to {trip.dropoffLocation.name}
+                      {trip.origin} → {trip.destination}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {new Date(trip.departureDate).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        month: 'long',
-                        day: 'numeric',
-                      })} • {trip.departureTime}
-                    </p>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(trip.departureDate).toLocaleString()}
+                    </div>
                   </div>
                   <div className="flex items-center">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${

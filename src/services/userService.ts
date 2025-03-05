@@ -342,6 +342,35 @@ const userService = {
       throw error;
     }
   },
+  
+  // Update user role
+  updateUserRole: async (userId: string, role: 'member' | 'admin' | 'guest'): Promise<UserProfile> => {
+    try {
+      // In a real app, this would be an API call
+      // const response = await api.patch(`/users/${userId}/role`, { role });
+      // return response.data;
+      
+      // For now, update mock data
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const userIndex = mockUsers.findIndex(u => u.id === userId);
+          if (userIndex === -1) {
+            throw new Error('User not found');
+          }
+          
+          mockUsers[userIndex] = {
+            ...mockUsers[userIndex],
+            role,
+          };
+          
+          resolve(mockUsers[userIndex]);
+        }, 500);
+      });
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      throw error;
+    }
+  },
 };
 
 export default userService; 

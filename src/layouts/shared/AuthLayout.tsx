@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../store';
 import { selectIsAuthenticated } from '../../features/shared/auth/authSlice';
+import HeloLogo from '../../components/shared/HeloLogo';
 
 const AuthLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const AuthLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-light dark:bg-primary">
       <div className="absolute top-0 left-0 w-full p-4">
-        <div className="text-2xl font-bold text-primary dark:text-accent">HELO</div>
+        <HeloLogo />
       </div>
       <Outlet />
     </div>

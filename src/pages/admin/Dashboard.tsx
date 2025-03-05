@@ -58,7 +58,7 @@ const AdminDashboard: React.FC = () => {
           pendingBookings: bookings.filter((b: BookingDetails) => b.status === 'pending').length,
           activeFleet: helicopters.filter(h => h.status === 'available').length + 
                       vehicles.filter(v => v.status === 'available').length,
-          totalRevenue: bookings.reduce((sum: number, booking: BookingDetails) => sum + booking.price, 0),
+          totalRevenue: bookings.reduce((sum: number, booking: BookingDetails) => sum + booking.totalAmount, 0),
         });
         
         setLoading(false);
@@ -230,7 +230,7 @@ const AdminDashboard: React.FC = () => {
                       <div className="text-sm font-medium">{booking.userId}</div>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <div className="text-sm">{booking.pickupLocation.name} to {booking.dropoffLocation.name}</div>
+                      <div className="text-sm">{booking.origin} → {booking.destination}</div>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <div className="text-sm">{formatDate(booking.departureDate)}</div>

@@ -1,3 +1,181 @@
+/* Basic styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+  color: #242f40;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  color: #242f40;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Button styles */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: #242f40;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #1a2330;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #242f40;
+  border: 1px solid #242f40;
+}
+
+.btn-secondary:hover {
+  background-color: #242f40;
+  color: white;
+}
+
+/* Card styles */
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #242f40;
+  box-shadow: 0 0 0 2px rgba(36, 47, 64, 0.2);
+}
+
+/* Layout styles */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.space-x-4 > * + * {
+  margin-left: 16px;
+}
+
+.space-y-4 > * + * {
+  margin-top: 16px;
+}
+
+/* Text styles */
+.text-center {
+  text-align: center;
+}
+
+.text-lg {
+  font-size: 18px;
+}
+
+.text-xl {
+  font-size: 20px;
+}
+
+.text-2xl {
+  font-size: 24px;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+/* Dark mode */
+.dark {
+  background-color: #242f40;
+  color: #f5f5f5;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #cca43b;
+}
+
+.dark .card {
+  background-color: #363636;
+}
+
+.dark .btn-primary {
+  background-color: #cca43b;
+  color: #242f40;
+}
+
+.dark .btn-primary:hover {
+  background-color: #a9852b;
+}
+
+.dark .btn-secondary {
+  color: #cca43b;
+  border-color: #cca43b;
+}
+
+.dark .btn-secondary:hover {
+  background-color: #cca43b;
+  color: #242f40;
+}
+
+/* App-specific animations and styles */
 .App {
   text-align: center;
 }

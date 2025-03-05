@@ -12,4 +12,5 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - PORT=8080
+      - NODE_OPTIONS=--openssl-legacy-provider
     restart: unless-stopped 

@@ -11,6 +11,50 @@ export interface User {
   membershipTier?: 'standard' | 'premium' | 'elite';
 }
 
+// Token storage constants and helper functions
+const TOKEN_KEY = 'auth_token';
+const TOKEN_EXPIRY_KEY = 'auth_token_expiry';
+const USER_KEY = 'auth_user';
+
+// Helper functions for token management
+const setToken = (token: string, expiresIn: number = 3600) => {
+  const expiryDate = new Date();
+  expiryDate.setSeconds(expiryDate.getSeconds() + expiresIn);
+  
+  // Use sessionStorage for better security (token cleared when tab is closed)
+  sessionStorage.setItem(TOKEN_KEY, token);
+  sessionStorage.setItem(TOKEN_EXPIRY_KEY, expiryDate.toISOString());
+};
+
+const clearToken = () => {
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_EXPIRY_KEY);
+  sessionStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(TOKEN_EXPIRY_KEY);
+  localStorage.removeItem(USER_KEY);
+};
+
+const isTokenValid = (): boolean => {
+  const expiry = sessionStorage.getItem(TOKEN_EXPIRY_KEY);
+  if (!expiry) return false;
+  
+  const expiryDate = new Date(expiry);
+  return expiryDate > new Date();
+};
+
+const getToken = (): string | null => {
+  const token = sessionStorage.getItem(TOKEN_KEY);
+  if (!token) return null;
+  
+  if (!isTokenValid()) {
+    clearToken();
+    return null;
+  }
+  
+  return token;
+};
+
 // Default Guest account
 const guestAccount = {
   id: 'guest-1',
@@ -32,6 +76,17 @@ const memberAccount = {
   password: 'member123' // In a real app, this would be hashed
 };
 
+// Default Admin account
+const adminAccount = {
+  id: 'admin-1',
+  email: 'admin@flyhelo.one',
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin' as const,
+  membershipTier: 'elite' as const,
+  password: 'admin123' // In a real app, this would be hashed
+};
+
 interface AuthState {
   user: User | null;
   token: string | null;
@@ -40,11 +95,15 @@ interface AuthState {
   error: string | null;
 }
 
+// Get user from sessionStorage if it exists
+const storedUser = sessionStorage.getItem(USER_KEY);
+const parsedUser = storedUser ? JSON.parse(storedUser) as User : null;
+
 // Initial state
 const initialState: AuthState = {
-  user: null,
-  token: localStorage.getItem('token'),
-  isAuthenticated: !!localStorage.getItem('token'),
+  user: parsedUser,
+  token: getToken(),
+  isAuthenticated: !!getToken(),
   isLoading: false,
   error: null,
 };
@@ -52,15 +111,33 @@ const initialState: AuthState = {
 // Async thunks
 export const login = createAsyncThunk(
   'auth/login',
-  async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+  async (credentials: { email: string; password: string; rememberMe?: boolean }, { rejectWithValue }) => {
     try {
+      // Set the expiresIn time based on "remember me" option
+      const expiresIn = credentials.rememberMe ? 7 * 24 * 60 * 60 : 3600; // 7 days or 1 hour
+      
+      // Check if the credentials match the admin account
+      if (credentials.email === adminAccount.email && credentials.password === adminAccount.password) {
+        const { password, ...adminUser } = adminAccount;
+        const adminToken = 'admin-jwt-token';
+        
+        // Store token with expiry
+        setToken(adminToken, expiresIn);
+        // Store user information
+        sessionStorage.setItem(USER_KEY, JSON.stringify(adminUser));
+        
+        return { user: adminUser, token: adminToken };
+      }
+      
       // Check if the credentials match the guest account
       if (credentials.email === guestAccount.email && credentials.password === guestAccount.password) {
         const { password, ...guestUser } = guestAccount;
         const guestToken = 'guest-jwt-token';
         
-        // Store token in localStorage
-        localStorage.setItem('token', guestToken);
+        // Store token with expiry
+        setToken(guestToken, expiresIn);
+        // Store user information
+        sessionStorage.setItem(USER_KEY, JSON.stringify(guestUser));
         
         return { user: guestUser, token: guestToken };
       }
@@ -70,8 +147,10 @@ export const login = createAsyncThunk(
         const { password, ...memberUser } = memberAccount;
         const memberToken = 'member-jwt-token';
         
-        // Store token in localStorage
-        localStorage.setItem('token', memberToken);
+        // Store token with expiry
+        setToken(memberToken, expiresIn);
+        // Store user information
+        sessionStorage.setItem(USER_KEY, JSON.stringify(memberUser));
         
         return { user: memberUser, token: memberToken };
       }
@@ -91,8 +170,10 @@ export const login = createAsyncThunk(
       
       const mockToken = 'mock-jwt-token';
       
-      // Store token in localStorage
-      localStorage.setItem('token', mockToken);
+      // Store token with expiry
+      setToken(mockToken, expiresIn);
+      // Store user information
+      sessionStorage.setItem(USER_KEY, JSON.stringify(mockUser));
       
       return { user: mockUser, token: mockToken };
     } catch (error) {
@@ -102,7 +183,7 @@ export const login = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk('auth/logout', async () => {
-  localStorage.removeItem('token');
+  clearToken();
   return null;
 });
 
@@ -110,8 +191,12 @@ export const register = createAsyncThunk(
   'auth/register',
   async (userData: { email: string; password: string; firstName: string; lastName: string }, { rejectWithValue }) => {
     try {
-      // Prevent registration with the guest email
-      if (userData.email === guestAccount.email || userData.email === memberAccount.email) {
+      // Prevent registration with reserved emails
+      if (
+        userData.email === guestAccount.email || 
+        userData.email === memberAccount.email ||
+        userData.email === adminAccount.email
+      ) {
         return rejectWithValue('This email is already registered');
       }
       
@@ -129,8 +214,10 @@ export const register = createAsyncThunk(
       
       const mockToken = 'mock-jwt-token-new-user';
       
-      // Store token in localStorage
-      localStorage.setItem('token', mockToken);
+      // Store token with expiry (1 hour)
+      setToken(mockToken, 3600);
+      // Store user information
+      sessionStorage.setItem(USER_KEY, JSON.stringify(mockUser));
       
       return { user: mockUser, token: mockToken };
     } catch (error) {
@@ -151,11 +238,18 @@ const authSlice = createSlice({
       state.user = user;
       state.token = token;
       state.isAuthenticated = true;
+      
+      // Update storage
+      setToken(token, 3600);
+      sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     },
     clearCredentials: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      
+      // Clear storage
+      clearToken();
     },
   },
   extraReducers: (builder) => {

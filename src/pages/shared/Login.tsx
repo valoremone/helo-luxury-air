@@ -47,7 +47,8 @@ const Login: React.FC = () => {
     try {
       const resultAction = await dispatch(login({ 
         email: data.email, 
-        password: data.password 
+        password: data.password,
+        rememberMe: data.rememberMe
       }));
       
       if (login.fulfilled.match(resultAction)) {
@@ -80,6 +81,11 @@ const Login: React.FC = () => {
               <div className="flex justify-between">
                 <div>
                   <p className="font-bold mb-2">Test Accounts:</p>
+                  <p className="mb-2">
+                    <strong>Admin Account:</strong><br />
+                    Email: admin@flyhelo.one<br />
+                    Password: admin123
+                  </p>
                   <p className="mb-2">
                     <strong>Member Account:</strong><br />
                     Email: member@flyhelo.one<br />

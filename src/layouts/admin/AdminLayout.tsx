@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { logout, selectCurrentUser } from '../../features/shared/auth/authSlice';
+import HeloLogo from '../../components/shared/HeloLogo';
 
 interface AdminLayoutProps {
   darkMode: boolean;
@@ -40,7 +41,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ darkMode, toggleDarkMode }) =
         <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)}></div>
         <div className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-secondary shadow-lg">
           <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
-            <div className="text-xl font-bold text-primary dark:text-accent">HELO ADMIN</div>
+            <div className="flex items-center">
+              <HeloLogo />
+              <span className="ml-2 text-sm font-bold text-primary dark:text-accent">ADMIN</span>
+            </div>
             <button
               type="button"
               className="text-gray-500 dark:text-gray-400"
@@ -78,8 +82,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ darkMode, toggleDarkMode }) =
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex flex-col flex-grow bg-white dark:bg-secondary shadow">
-          <div className="flex items-center h-16 px-4 border-b border-gray-200 dark:border-gray-700">
-            <div className="text-xl font-bold text-primary dark:text-accent">HELO ADMIN</div>
+          <div className="flex items-center h-16 px-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center">
+              <HeloLogo />
+              <span className="ml-2 text-sm font-bold text-primary dark:text-accent">ADMIN</span>
+            </div>
           </div>
           <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
             <nav className="flex-1 px-2 space-y-1">
