@@ -2,10 +2,13 @@
 
 A luxury air mobility application for private jet and helicopter charter services.
 
+> **Note**: This project's file structure has been cleaned up and consolidated for better organization and Docker containerization.
+
 ## Overview
 
 HELO Luxury Air is a premium web application designed to provide an exceptional booking experience for luxury air travel. The application showcases the fleet, services, and booking options for private jets and helicopters.
 
+## Features
 ## Features
 
 - **Luxury Fleet Showcase**: Browse through our premium collection of private jets and helicopters
