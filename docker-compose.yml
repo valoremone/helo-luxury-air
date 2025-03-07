@@ -1,9 +1,29 @@
+version: '3'
+
 services:
-  app:
+  # Development service
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+    command: npm run dev
+
+  # Production service
+  prod:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: helo-luxury-air
     ports:
-      - "8080:80"
-    restart: unless-stopped 
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1 
